@@ -16,6 +16,89 @@ To write a PYTHON program for socket for HTTP for web page upload and download
 6.Stop the program
 <BR>
 ## Program 
+server.py
+```
+import socket
+
+s = socket.socket()
+s.bind(("localhost",8080))
+s.listen(1)
+
+print("Server running...")
+
+while True:
+    c,addr = s.accept()
+    
+    request = c.recv(1024).decode()
+    print("Request received")
+
+    if "GET" in request:
+        f = open("janani.html","r")
+        data = f.read()
+        f.close()
+
+        response = "HTTP/1.1 200 OK\n\n" + data
+        c.send(response.encode())
+
+    elif "POST" in request:
+        data = request.split("\n\n")[1]
+
+        f = open("janani.txt","w")
+        f.write(data)
+        f.close()
+
+        c.send("HTTP/1.1 200 OK\n\nFile Uploaded".encode())
+
+    c.close()
+```
+client.py
+```
+import socket
+
+s = socket.socket()
+s.connect(("localhost",8080))
+
+ch = input("1.Download 2.Upload : ")
+
+# Download webpage
+if ch == "1":
+    req = "GET / HTTP/1.1\nHost: localhost\n\n"
+    s.send(req.encode())
+
+    data = s.recv(4096)
+    print(data.decode())
+
+# Upload file
+else:
+    msg = input("Enter data to upload: ")
+
+    req = "POST / HTTP/1.1\nHost: localhost\n\n" + msg
+    s.send(req.encode())
+
+    data = s.recv(1024)
+    print(data.decode())
+
+s.close()
+```
+subashram.html
+```
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My First Web Page</title>
+</head>
+<body>
+
+    <h1>Welcome to My Website</h1>
+    <p>This is a simple HTML page.</p>
+
+</body>
+</html>
+```
 ## OUTPUT
+<img width="1363" height="702" alt="Screenshot 2026-03-17 231815" src="https://github.com/user-attachments/assets/54f3389d-b6c6-493e-aae6-17fad1b1455c" />
+
+<img width="670" height="316" alt="Screenshot 2026-03-17 232344" src="https://github.com/user-attachments/assets/ff46b257-e1f3-4ad6-90b2-f8c4b51a3afe" />
+
 ## Result
 Thus the socket for HTTP for web page upload and download created and Executed
