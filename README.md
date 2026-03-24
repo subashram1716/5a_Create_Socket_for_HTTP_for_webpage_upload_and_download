@@ -33,7 +33,7 @@ while True:
     print("Request received")
 
     if "GET" in request:
-        f = open("janani.html","r")
+        f = open("subashram.html","r")
         data = f.read()
         f.close()
 
