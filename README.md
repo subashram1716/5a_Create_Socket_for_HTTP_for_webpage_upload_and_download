@@ -43,7 +43,7 @@ while True:
     elif "POST" in request:
         data = request.split("\n\n")[1]
 
-        f = open("janani.txt","w")
+        f = open("subashram.txt","w")
         f.write(data)
         f.close()
 
